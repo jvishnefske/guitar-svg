@@ -1,0 +1,21 @@
+#!/bin/bash
+#
+# Post-merge hook for FreeCAD FCStd files.
+# Rebuilds FCStd files from exploded directories after merge/pull.
+#
+
+set -e
+
+echo "Rebuilding FCStd files from tracked directories..."
+
+# Find all .fcstd.d directories
+for dir in $(find . -type d -name "*.fcstd.d" 2>/dev/null); do
+    if [ -f "$dir/Document.xml" ]; then
+        echo "  Packing: $dir"
+        python -m scripts.fcstd pack "$dir" >/dev/null 2>&1 || {
+            echo "    WARNING: Failed to pack $dir"
+        }
+    fi
+done
+
+echo "Done."

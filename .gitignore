@@ -5,3 +5,10 @@
 *.webp
 *.zip
 *.psd
+
+# FreeCAD
+*.FCBak
+# Packed FCStd files (reconstructed from .fcstd.d/ directories)
+*.FCStd
+# Thumbnails within exploded directories
+*.fcstd.d/thumbnails/

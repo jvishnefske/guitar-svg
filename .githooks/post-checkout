@@ -1,0 +1,27 @@
+#!/bin/bash
+#
+# Post-checkout hook for FreeCAD FCStd files.
+# Rebuilds FCStd files from exploded directories after checkout.
+#
+
+set -e
+
+# Only run on branch checkout, not file checkout
+# $3 is 1 for branch checkout, 0 for file checkout
+if [ "$3" != "1" ]; then
+    exit 0
+fi
+
+echo "Rebuilding FCStd files from tracked directories..."
+
+# Find all .fcstd.d directories
+for dir in $(find . -type d -name "*.fcstd.d" 2>/dev/null); do
+    if [ -f "$dir/Document.xml" ]; then
+        echo "  Packing: $dir"
+        python -m scripts.fcstd pack "$dir" >/dev/null 2>&1 || {
+            echo "    WARNING: Failed to pack $dir"
+        }
+    fi
+done
+
+echo "Done."
