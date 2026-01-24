@@ -1,10 +1,6 @@
-# FreeCAD exploded directory files
 *.xml diff=xml
-*.brp diff
 *.svg diff=xml
 *.png binary
-
-# Binary files
-*.FCStd binary
+*.FCStd diff=fcstd
 *.FCBak binary
 *.psd binary
