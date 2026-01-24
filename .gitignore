@@ -5,10 +5,6 @@
 *.webp
 *.zip
 *.psd
-
+__pycache__
 # FreeCAD
 *.FCBak
-# Packed FCStd files (reconstructed from .fcstd.d/ directories)
-*.FCStd
-# Thumbnails within exploded directories
-*.fcstd.d/thumbnails/
