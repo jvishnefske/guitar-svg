@@ -96,7 +96,7 @@
     <ObjectDeps Name="Sketch" Count="1">
       <Dep Name="XY_Plane"/>
     </ObjectDeps>
-    <ObjectDeps Name="Fender_Stratocaster_62" Count="0"/>
+    <ObjectDeps Name="Electric_Guitar_1962" Count="0"/>
     <Object type="PartDesign::Body" name="Body" id="1151"/>
     <Object type="App::Origin" name="Origin" id="1152"/>
     <Object type="App::Line" name="X_Axis" id="1153"/>
@@ -106,7 +106,7 @@
     <Object type="App::Plane" name="XZ_Plane" id="1157"/>
     <Object type="App::Plane" name="YZ_Plane" id="1158"/>
     <Object type="Sketcher::SketchObject" name="Sketch" id="1159" Touched="1"/>
-    <Object type="Image::ImagePlane" name="Fender_Stratocaster_62" id="1150"/>
+    <Object type="Image::ImagePlane" name="Electric_Guitar_1962" id="1150"/>
   </Objects>
   <ObjectData Count="10">
     <Object name="Body" Extensions="True">
@@ -897,17 +897,17 @@
         </Property>
       </Properties>
     </Object>
-    <Object name="Fender_Stratocaster_62">
+    <Object name="Electric_Guitar_1962">
       <Properties Count="8" TransientCount="0">
         <Property name="ExpressionEngine" type="App::PropertyExpressionEngine" status="67108864">
           <ExpressionEngine count="0">
                     </ExpressionEngine>
         </Property>
         <Property name="ImageFile" type="App::PropertyFileIncluded">
-          <FileIncluded file="Fender-Stratocaster-62.svg"/>
+          <FileIncluded file="1962-electric-guitar.svg"/>
         </Property>
         <Property name="Label" type="App::PropertyString" status="134217728">
-          <String value="Fender-Stratocaster-62"/>
+          <String value="1962 Electric Guitar"/>
         </Property>
         <Property name="Label2" type="App::PropertyString" status="67108992">
           <String value=""/>
