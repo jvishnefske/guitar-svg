@@ -435,7 +435,7 @@
         </Property>
       </Properties>
     </ViewProvider>
-    <ViewProvider name="Fender_Stratocaster_62" expanded="0" treeRank="1150">
+    <ViewProvider name="Electric_Guitar_1962" expanded="0" treeRank="1150">
       <Properties Count="10" TransientCount="0">
         <Property name="BoundingBox" type="App::PropertyBool" status="1">
           <Bool value="false"/>

@@ -1,4 +1,4 @@
-"""Generate CAM toolpaths for the Stratocaster guitar body.
+"""Generate CAM toolpaths for the 1962 Electric Guitar body.
 
 Creates a CAM Job with:
 - 1/2" (12.7mm) endmill tool
@@ -16,7 +16,7 @@ import Path.Tool.Bit as PathToolBit
 import Path.Op.Profile as PathProfile
 import Path.Op.Pocket as PathPocket
 
-DOC_PATH = "/home/j/Documents/guitar/3d/stratocaster.FCStd"
+DOC_PATH = "/home/j/Documents/guitar/3d/1962-electric-guitar.FCStd"
 ENDMILL_SHAPE = "/app/freecad/Mod/CAM/Tools/Shape/endmill.fcstd"
 
 TOOL_DIAMETER = 12.7       # mm (1/2 inch)
@@ -301,7 +301,7 @@ def main():
     opensbp = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(opensbp)
 
-    sbp_path = "/home/j/Documents/guitar/3d/stratocaster.sbp"
+    sbp_path = "/home/j/Documents/guitar/3d/1962-electric-guitar.sbp"
     # Pass the operations directly since they hold the Path data
     ops_with_paths = [op for op in job.Operations.Group
                       if len(op.Path.Commands) > 2]

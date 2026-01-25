@@ -1,7 +1,7 @@
 import FreeCAD
 import FreeCAD as App
 
-doc = FreeCAD.openDocument("/home/j/Documents/guitar/3d/stratocaster.FCStd")
+doc = FreeCAD.openDocument("/home/j/Documents/guitar/3d/1962-electric-guitar.FCStd")
 body = doc.getObject("Body")
 pad = doc.getObject("Pad")
 xy_plane = doc.getObject("XY_Plane")
@@ -52,4 +52,4 @@ else:
     print("All features valid")
 
 doc.save()
-print("Saved stratocaster.FCStd")
+print("Saved 1962-electric-guitar.FCStd")
