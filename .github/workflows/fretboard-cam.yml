@@ -1,0 +1,84 @@
+name: Fretboard CAM build & release
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+    paths:
+      - "3d/**"
+      - ".github/workflows/fretboard-cam.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 3d
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install pytest
+        run: pip install pytest
+
+      - name: Python tests
+        run: python -m pytest test_conic_fretboard_cam.py -v
+
+      - name: TypeScript build
+        run: npx --yes -p typescript@5 tsc
+
+      - name: Verify committed JS matches the TS build
+        run: |
+          if ! git diff --exit-code fretboard_cam.js; then
+            echo "::error file=3d/fretboard_cam.js::fretboard_cam.js is out of sync with fretboard_cam.ts. Run 'npx -p typescript@5 tsc' in 3d/ and commit the result."
+            exit 1
+          fi
+
+      - name: JS smoke test
+        run: node test_fretboard_cam.mjs
+
+      - name: Stage release artifacts
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          VERSION="${GITHUB_REF_NAME}"
+          BUNDLE="fretboard-cam-${VERSION}"
+          mkdir -p "../dist/${BUNDLE}"
+          cp fretboard_cam.html fretboard_cam.js "../dist/${BUNDLE}/"
+          cp ../LICENSE "../dist/${BUNDLE}/" 2>/dev/null || true
+          (cd ../dist && zip -r "${BUNDLE}.zip" "${BUNDLE}")
+          ls -la ../dist/
+
+      - name: Upload artifact (always, for inspection)
+        uses: actions/upload-artifact@v4
+        with:
+          name: fretboard-cam-${{ github.sha }}
+          path: |
+            3d/fretboard_cam.html
+            3d/fretboard_cam.js
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        working-directory: ${{ github.workspace }}
+        run: |
+          VERSION="${GITHUB_REF_NAME}"
+          gh release create "${VERSION}" \
+            --title "Fretboard CAM ${VERSION}" \
+            --generate-notes \
+            "dist/fretboard-cam-${VERSION}.zip" \
+            "3d/fretboard_cam.html" \
+            "3d/fretboard_cam.js"

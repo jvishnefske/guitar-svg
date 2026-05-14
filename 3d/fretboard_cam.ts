@@ -471,6 +471,9 @@ function download(): void {
   setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 0);
 }
 
-document.getElementById("run")?.addEventListener("click", run);
-document.getElementById("download")?.addEventListener("click", download);
-window.addEventListener("DOMContentLoaded", run);
+// Guard UI wiring so the same file is loadable in Node for tests.
+if (typeof document !== "undefined") {
+  document.getElementById("run")?.addEventListener("click", run);
+  document.getElementById("download")?.addEventListener("click", download);
+  window.addEventListener("DOMContentLoaded", run);
+}
