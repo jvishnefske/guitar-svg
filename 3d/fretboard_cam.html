@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Conic Fretboard G-code Generator</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font: 14px/1.4 system-ui, sans-serif; margin: 0; padding: 16px;
+         display: grid; grid-template-columns: 320px 1fr; gap: 16px; }
+  h1 { font-size: 18px; margin: 0 0 8px 0; }
+  h2 { font-size: 14px; margin: 12px 0 4px 0; text-transform: uppercase;
+       letter-spacing: 0.04em; color: #888; }
+  fieldset { border: 1px solid #ccc; border-radius: 4px; margin: 0 0 8px 0;
+             padding: 8px 12px; }
+  legend { font-weight: 600; padding: 0 4px; }
+  label { display: grid; grid-template-columns: 1fr 90px; align-items: center;
+          gap: 8px; padding: 2px 0; }
+  input[type=number] { width: 100%; padding: 2px 4px; font: inherit;
+                       text-align: right; }
+  input[type=text] { width: 100%; padding: 2px 4px; font: inherit; }
+  button { padding: 6px 12px; font: inherit; cursor: pointer; }
+  button.primary { font-weight: 600; }
+  .row { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+  .controls { overflow-y: auto; max-height: calc(100vh - 32px); }
+  .preview { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  canvas { border: 1px solid #ccc; background: #fff;
+           image-rendering: pixelated; max-width: 100%; height: auto; }
+  pre { white-space: pre-wrap; background: #f6f6f6; padding: 8px;
+        border: 1px solid #ddd; font: 12px/1.3 ui-monospace, monospace;
+        max-height: 240px; overflow: auto; margin: 0; }
+  .stat { font-family: ui-monospace, monospace; font-size: 12px;
+          color: #555; }
+  .err { color: #c00; font-weight: 600; }
+  .swatch { display: inline-block; width: 12px; height: 12px;
+            vertical-align: middle; margin-right: 4px; border: 1px solid #888; }
+  @media (prefers-color-scheme: dark) {
+    body { background: #1a1a1a; color: #eee; }
+    fieldset { border-color: #444; }
+    pre { background: #222; border-color: #444; color: #eee; }
+    canvas { background: #111; border-color: #444; }
+    .stat { color: #aaa; }
+  }
+</style>
+</head>
+<body>
+<form class="controls" id="controls">
+  <h1>Conic Fretboard G-code</h1>
+  <p style="font-size:12px;color:#888;margin:0 0 8px">
+    Compound-radius fretboard surfacing with top-down clearance sampling
+    and rainbow-arc transitions. Offline; no network used.
+  </p>
+
+  <fieldset>
+    <legend>Fretboard (mm)</legend>
+    <label>Length (nut→end) <input type=number step=0.01 name=length value=432.0></label>
+    <label>Nut width <input type=number step=0.01 name=nut_width value=43.0></label>
+    <label>Heel width <input type=number step=0.01 name=heel_width value=57.15></label>
+    <label>Radius @ nut <input type=number step=0.01 name=radius_nut value=241.3></label>
+    <label>Radius @ heel <input type=number step=0.01 name=radius_heel value=406.4></label>
+    <label>Crown Z <input type=number step=0.01 name=z_crown value=27.0></label>
+  </fieldset>
+
+  <fieldset>
+    <legend>Tool</legend>
+    <label>Diameter (mm) <input type=number step=0.01 name=diameter value=6.35></label>
+    <label>Type
+      <select name=kind style="width:100%">
+        <option value=ball selected>Ball-nose</option>
+        <option value=flat>Flat endmill</option>
+      </select>
+    </label>
+  </fieldset>
+
+  <fieldset>
+    <legend>CAM parameters</legend>
+    <label>Stepover (mm) <input type=number step=0.1 name=stepover value=2.0></label>
+    <label>Footprint sample (mm) <input type=number step=0.05 name=sample_step value=0.5></label>
+    <label>Safe Z (mm) <input type=number step=0.5 name=safe_z value=40.0></label>
+    <label>Feed XY (mm/min) <input type=number step=10 name=feed_xy value=1500></label>
+    <label>Feed Z (mm/min) <input type=number step=10 name=feed_z value=500></label>
+    <label>Spindle (RPM) <input type=number step=100 name=spindle_rpm value=18000></label>
+    <label>Margin past edge (mm) <input type=number step=0.1 name=margin_xy value=2.0></label>
+    <label>Rainbow pad (mm) <input type=number step=0.1 name=rainbow_pad value=1.0></label>
+    <label>Rainbow transitions <input type=checkbox name=rainbow_transitions checked></label>
+  </fieldset>
+
+  <div class="row">
+    <button type=button class="primary" id=run>Generate</button>
+    <button type=button id=download disabled>Download .nc</button>
+  </div>
+  <div class="row stat" id=stats></div>
+  <div class="row" id=error></div>
+</form>
+
+<section class="preview">
+  <div>
+    <span class="stat"><span class="swatch" style="background:#1f77b4"></span>Cutting moves</span>
+    &nbsp;
+    <span class="stat"><span class="swatch" style="background:#d62728"></span>Rainbow arcs</span>
+    &nbsp;
+    <span class="stat"><span class="swatch" style="background:#aaa;border-style:dashed"></span>Part outline</span>
+  </div>
+  <canvas id=preview width=900 height=420></canvas>
+  <h2>G-code (first 200 lines)</h2>
+  <pre id=gcode>—</pre>
+</section>
+
+<script src="fretboard_cam.js"></script>
+</body>
+</html>

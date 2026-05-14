@@ -6,6 +6,11 @@
 
 - `fix_pockets.py` — Fixes pocket sketch attachments to XY_Plane with a Z offset, then creates the NeckPocket and ControlsPocket features in the PartDesign body.
 - `cam.py` — Generates CAM toolpaths (profile and pocket operations) and exports to ShopBot `.sbp` format.
+- `conic_fretboard_cam.py` — Stand-alone G-code generator for a compound-radius (conical) fretboard. Uses top-down projection sampling of the conic surface under each tool footprint to compute a safe tip Z so the endmill cannot intersect the surface. Emits half-circle "rainbow" XY arcs between raster rows (G2/G3) at constant transit Z, swinging outside the part boundary to meter engagement on re-entry. A boundary-clearance check rejects any arc that would touch the part. Supports flat and ball-nose tools. Run with `python3 conic_fretboard_cam.py`; tests in `test_conic_fretboard_cam.py`.
+- `fretboard_cam.ts` / `fretboard_cam.js` / `fretboard_cam.html` — Static air-gapped port of `conic_fretboard_cam.py`. The TypeScript source (strict mode, no implicit any) is the authoritative implementation; `tsconfig.json` builds it to plain `fretboard_cam.js`, which the HTML loads via `<script src="fretboard_cam.js">`. Open `fretboard_cam.html` directly from a thumb drive (file:// works) or serve with any static server. No network calls, no external libraries, no bundler. UI provides geometry/tool/CAM parameter fields, a top-down preview canvas (cutting moves in blue, rainbow arcs in red, part outline dashed), and a "Download .nc" button.
+
+  Rebuild: `cd 3d && npx --yes -p typescript@5 tsc` (only needed when editing `.ts`).
+  Thumb-drive bundle: copy `fretboard_cam.html` + `fretboard_cam.js`. The `.ts` is the source of truth but not required at runtime.
 
 Run `fix_pockets.py` first (it creates the pocket features that `cam.py` references).
 
