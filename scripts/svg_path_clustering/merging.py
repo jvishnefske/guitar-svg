@@ -56,7 +56,6 @@ def reverse_path_commands(commands: list[Tuple[str, list[float]]]) -> list[Tuple
         return []
 
     # Track points through the path to build reversal
-    points: list[Tuple[float, float]] = []
     current_x, current_y = 0.0, 0.0
     subpath_start_x, subpath_start_y = 0.0, 0.0
 

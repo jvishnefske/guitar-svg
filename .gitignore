@@ -8,3 +8,5 @@
 __pycache__
 # FreeCAD
 *.FCBak
+.coverage
+coverage.xml

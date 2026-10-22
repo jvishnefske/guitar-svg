@@ -6,16 +6,12 @@ clustering algorithms, path merging, and output generation.
 """
 
 import unittest
-from pathlib import Path
-import tempfile
-import os
 
 from svg_path_clustering.types import (
     Point,
     VisualAttrs,
     PathSegment,
     PathChain,
-    ClusterResult,
 )
 from svg_path_clustering.parsing import (
     parse_path_d,
@@ -28,7 +24,6 @@ from svg_path_clustering.spatial_index import SpatialIndex
 from svg_path_clustering.clustering import (
     UnionFind,
     cluster_segments,
-    build_adjacency_graph,
 )
 from svg_path_clustering.merging import (
     reverse_path_d,
