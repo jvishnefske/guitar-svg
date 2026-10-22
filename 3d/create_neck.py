@@ -651,7 +651,7 @@ def create_reference_image(doc, yz_plane, x_offset, name):
 def main():
     """Create the neck model."""
     print("Creating 1962 Stratocaster neck model...")
-    print(f"Dimensions (from reference drawings):")
+    print("Dimensions (from reference drawings):")
     print(f"  Nut width: {NUT_WIDTH}mm")
     print(f"  Heel width: {HEEL_WIDTH}mm")
     print(f"  Nut to heel: {NUT_TO_HEEL}mm")
@@ -741,7 +741,7 @@ def main():
     print(f"\nSaved: {DOC_PATH}")
 
     # Print heel dimensions for verification against body pocket
-    print(f"\nHeel dimensions for body pocket fit:")
+    print("\nHeel dimensions for body pocket fit:")
     print(f"  Width: {HEEL_WIDTH}mm (2.2\")")
     print(f"  Corner radius: {HEEL_CURVE_RADIUS}mm (R26.50 from drawing)")
     print(f"  Length to heel end: {NUT_TO_HEEL}mm")

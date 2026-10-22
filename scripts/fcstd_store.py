@@ -1,5 +1,9 @@
 """Rewrite FCStd files with ZIP_STORED (no compression) for all entries."""
-import zipfile, sys, tempfile, shutil, os
+import zipfile
+import sys
+import tempfile
+import shutil
+import os
 
 for path in sys.argv[1:]:
     tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".FCStd")

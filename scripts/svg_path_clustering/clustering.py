@@ -8,7 +8,7 @@ within each chain for path merging.
 from typing import Optional, Tuple
 from collections import defaultdict
 
-from .types import Point, PathSegment, PathChain, ClusterResult, VisualAttrs
+from .types import PathSegment, PathChain, ClusterResult, VisualAttrs
 from .spatial_index import SpatialIndex
 from .merging import merge_chain_paths
 
